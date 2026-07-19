@@ -1,0 +1,5 @@
+setTheme()
+
+getTheme()
+
+setLanguage()

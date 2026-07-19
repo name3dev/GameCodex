@@ -1,0 +1,5 @@
+addFavorite()
+
+removeFavorite()
+
+getFavorites()
