@@ -1,12 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import GameCard from "../components/explore/GameCard";
-import "../App.css";
+import "../components/client/styles/Explore.css";
 
 const GENRES = [
     {
         name: "FPS",
-        icon: "🎯",
+        icon: "",
         color: "#00e5ff",
         desc: "First-person combat and shooting mechanics.",
         branches: [
@@ -23,7 +23,7 @@ const GENRES = [
 
     {
         name: "Action",
-        icon: "⚔️",
+        icon: "",
         color: "#ff9933",
         desc: "Fast movement and direct combat.",
         branches: [
@@ -40,7 +40,7 @@ const GENRES = [
 
     {
         name: "Horror",
-        icon: "👁️",
+        icon: "",
         color: "#ff5555",
         desc: "Fear, tension and survival mechanics.",
         branches: [
@@ -104,8 +104,6 @@ function Explore({ eraIndex }) {
                         <p>{genre.desc}</p>
                     </div>
 
-                    <div className="root-main-line"></div>
-
                     <div className="branches-row">
 
                         {genre.branches.map((branch) => (
@@ -114,8 +112,6 @@ function Explore({ eraIndex }) {
                                 className="branch-column"
                                 key={branch.name}
                             >
-
-                                <div className="branch-line-top"></div>
 
                                 <div className="branch-card">
 

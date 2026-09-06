@@ -26,6 +26,35 @@ body {
     position: relative;
 }
 
+.icon_website {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.loading-screen {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: rgb(1, 5, 1);
+}
+
+.loading-text {
+    color: rgb(0, 183, 15);
+    font-size: 24px;
+    font-family: monospace;
+    text-shadow: 0 0 10px rgba(0, 183, 15, .5);
+}
+
+.loading-logo {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    border-radius: 25%;
+}
+
 /* =========================================================
    HEADER
 ========================================================= */
@@ -63,12 +92,15 @@ body {
 }
 
 .logo-icon {
-    width: 26px;
-    height: 26px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .logo-text {
     text-shadow: 0 0 10px rgba(0, 183, 15, .5);
+    padding-bottom: 2%;
 }
 
 .main-nav {
@@ -578,7 +610,7 @@ body {
 
 .hero-section {
     text-align: center;
-    padding: 20px 0 10px;
+    padding: 100px 0 10px;
 }
 
 .hero-title {
@@ -1072,9 +1104,7 @@ body {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 140px);
     height: 3px;
-    background: lime;
 }
 
 .branch-column {

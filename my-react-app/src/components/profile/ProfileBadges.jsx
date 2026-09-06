@@ -1,30 +1,40 @@
+import founder_logo from "../../../src/assets/logo.png";
+import dev_logo from "../../../src/assets/dev_icon.png";
+import admin_logo from "../../../src/assets/administrator_icon.png";
+import moderator_logo from "../../../src/assets/moderator_icon.png";
+import verified_logo from "../../../src/assets/verified_icon.png";
 const badges = {
+    user: {
+        icon: "👤",
+        text: "First User",
+        color: "#ffc414"
+    },
     founder: {
-        icon: "👑",
+        icon: founder_logo,
         text: "Founder",
         color: "#ffb800"
     },
 
     developer: {
-        icon: "🛠",
+        icon: dev_logo,
         text: "Developer",
         color: "#00d4ff"
     },
 
     admin: {
-        icon: "🛡",
+        icon: admin_logo,   
         text: "Administrator",
         color: "#ff5050"
     },
 
     verified: {
-        icon: "⭐",
+        icon:  verified_logo,
         text: "Verified",
         color: "#6cff47"
     },
 
     moderator: {
-        icon: "⚖️",
+        icon: moderator_logo,
         text: "Moderator",
         color: "#b45cff"
     },
@@ -56,7 +66,17 @@ function ProfileBadges({ roles = [] }) {
                         style={{ borderColor: badge.color }}
                     >
 
-                        <span>{badge.icon}</span>
+                        {badge.icon.endsWith?.(".png") ? (
+                            <img
+                                src={badge.icon}
+                                alt={badge.text}
+                                className="badge-icon"
+                            />
+                        ) : (
+                            <span className="badge-emoji">
+                                {badge.icon}
+                            </span>
+                        )}
 
                         {badge.text}
 

@@ -6,6 +6,7 @@ import { getProfile, updateProfile } from "./services/profile";
 import { useAuth } from "./context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import './App.css';
+import Logo from './components/logo/logo.jsx';
 import Home from './pages/Home';
 import Arcade from './pages/Arcade';
 import Explore from './pages/Explore';
@@ -105,7 +106,10 @@ function App() {
 
 
   if (loading) {
-    return <div>Loading...</div>;
+    return<div className="loading-screen">
+            <img src="../../../src/assets/dev_icon.png" alt="GameCodex Logo" className="loading-logo" />
+            <p className="loading-text">Loading...</p>
+          </div>;
   }
 
   if (!user) {
@@ -168,7 +172,7 @@ function App() {
 
       <header className="header">
         <Link to="/" className="logo-section" onClick={() => { handleGainXp(5); setIsProfileOpen(false); }}>
-          <Gamepad2 className="logo-icon" />
+          <Logo />
           <span className="logo-text">GameCodex</span>
         </Link>
 
@@ -330,23 +334,23 @@ function App() {
                   setIsProfileOpen(false);
                 }}
               >
-                👤 Profile
+                Profile
               </button>
 
               <button className="dropdown-item">
-                ❤️ Favorite Games
+                Favorite Games
               </button>
 
               <button className="dropdown-item">
-                🏆 Achievements
+                Achievements
               </button>
 
               <button className="dropdown-item">
-                📜 Timeline
+                Timeline
               </button>
 
               <button className="dropdown-item">
-                ⚙️ Settings
+                Settings
               </button>
 
               <div className="dropdown-divider"></div>
@@ -359,7 +363,7 @@ function App() {
                   navigate("/auth");
                 }}
               >
-                🚪 Logout
+                Logout
               </button>
 
             </motion.div>

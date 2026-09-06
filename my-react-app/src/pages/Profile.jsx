@@ -14,7 +14,7 @@ import EditProfileModal from "../components/profile/profile_edit/EditProfileModa
 import "../components/profile/Profile.css";
 
 function Profile() {
-    
+
     const { username } = useParams();
 
     const [profile, setProfile] = useState(null);
@@ -50,9 +50,10 @@ function Profile() {
     }, [username]);
 
     if (loading) {
-
-        return <h2>Loading...</h2>;
-
+        return <div className="loading-screen">
+            <img src="../../../src/assets/dev_icon.png" alt="GameCodex Logo" className="loading-logo" />
+            <p className="loading-text">Loading...</p>
+        </div>;
     }
 
     if (!profile) {
