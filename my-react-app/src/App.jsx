@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Gamepad2, User, X } from 'lucide-react';
+import { Search, User, X } from 'lucide-react';
 import { getProfile, updateProfile } from "./services/profile";
 import { useAuth } from "./context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { DATABASE } from "./components/explore/GameCard";
 import './App.css';
 import Logo from './components/logo/logo.jsx';
 import Home from './pages/Home';
@@ -12,13 +13,7 @@ import Arcade from './pages/Arcade';
 import Explore from './pages/Explore';
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
-const GAMES_DATABASE = [
-  { name: 'Super Mario Bros', description: 'The legendary 8-bit platformer that saved the gaming industry in 1985.', link: '/arcade', genre: 'Platformer', category: 'Action' },
-  { name: 'Doom (1993)', description: 'Revolutionary first-person shooter that defined the 3D action genre.', link: '/arcade', genre: 'FPS', category: 'Action' },
-  { name: 'Pac-Man', description: 'Classic arcade game from 1980. Eat dots and avoid ghosts.', link: '/arcade', genre: 'Maze Chase', category: 'Casual' },
-  { name: 'Tetris', description: 'The puzzle masterpiece created by Alexey Pajitnov in 1984.', link: '/explore', genre: 'Puzzle', category: 'Casual' },
-  { name: 'RPG History', description: 'Deep dive into the roots of role-playing games from Ultima to Baldur\'s Gate.', link: '/explore' }
-];
+
 
 function XpProgressBar({ currentXp, targetXp, level }) {
   const percentage = Math.min(Math.max((currentXp / targetXp) * 100, 0), 100);
@@ -47,9 +42,38 @@ function App() {
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState(1);
   const [profile, setProfile] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const SEARCH_DATABASE = Object.entries(DATABASE).flatMap(
+    ([genre, branches]) =>
+      Object.entries(branches).flatMap(
+        ([category, games]) =>
+          games.map((game) => ({
+            ...game,
+            genre,
+            category
+          }))
+      )
+  );
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredResults = SEARCH_DATABASE.filter((game) => {
+    const query = searchQuery.toLowerCase().trim();
+
+    if (!query) return false;
+
+    return [
+      game.name,
+      game.year,
+      game.desc,
+      game.genre,
+      game.category
+    ]
+      .join(" ")
+      .toLowerCase()
+      .includes(query);
+  });
+
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const [eraIndex, setEraIndex] = useState(3);
@@ -106,10 +130,10 @@ function App() {
 
 
   if (loading) {
-    return<div className="loading-screen">
-            <img src="../../../src/assets/dev_icon.png" alt="GameCodex Logo" className="loading-logo" />
-            <p className="loading-text">Loading...</p>
-          </div>;
+    return <div className="loading-screen">
+      <img src="../../../src/assets/dev_icon.png" alt="GameCodex Logo" className="loading-logo" />
+      <p className="loading-text">Loading...</p>
+    </div>;
   }
 
   if (!user) {
@@ -159,13 +183,6 @@ function App() {
 
   };
 
-  const filteredResults = GAMES_DATABASE.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.genre?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.category?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
     <div className={`container ${currentClassName}`}>
       <div className="crt-scanlines"></div>
@@ -209,66 +226,102 @@ function App() {
 
       <AnimatePresence>
         {isSearchOpen && (
-          <div className="modal-overlay" onClick={() => setIsSearchOpen(false)}>
+          <div
+            className="modal-overlay"
+            onClick={() => {
+              setIsSearchOpen(false);
+              setSearchQuery("");
+            }}
+          >
             <motion.div
               className="search-modal"
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -50 }}
+              initial={{ opacity: 0, y: -40, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -40, scale: 0.97 }}
+              transition={{ duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="search-modal-header">
-                <Search className="search-modal-icon" />
+                <Search
+                  className="search-modal-icon"
+                  size={20}
+                />
+
                 <input
                   type="text"
-                  placeholder="Search games, consoles, eras..."
+                  placeholder="Search games, genres, categories..."
                   className="search-modal-input"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
                 />
-                <button className="close-modal-btn" onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}>
+
+                <button
+                  className="close-modal-btn"
+                  onClick={() => {
+                    setIsSearchOpen(false);
+                    setSearchQuery("");
+                  }}
+                >
                   <X size={18} />
                 </button>
               </div>
 
               <div className="search-modal-results">
-                {searchQuery ? (
-                  filteredResults.length > 0 ? (
-                    <div className="search-results-list">
-                      {filteredResults.map((result, index) => (
-                        <Link
-                          to={result.link}
-                          key={index}
-                          className="search-result-item"
-                          onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
-                        >
-                          <div className="upper-search-item-case">
-                            <div className="search-item-title">{result.name}</div>
-                            <div className="upper-search-item-min-case">
-                              {result.genre && (
-                                <div className="search-item-genre-category">
-                                  {result.genre}
-                                </div>
-                              )}
 
-                              {result.category && (
-                                <div className="search-item-genre-category">
-                                  {result.category}
-                                </div>
-                              )}
-                            </div>
+                {!searchQuery.trim() ? (
+                  <div className="search-placeholder-text">
+                    Search games, genres, categories or years...
+                  </div>
+                ) : filteredResults.length > 0 ? (
+
+                  <div className="search-results-list">
+                    {filteredResults.map((result) => (
+                      <a
+                        href={result.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        key={`${result.genre}-${result.category}-${result.name}`}
+                        className="search-result-item"
+                      >
+                        <div className="upper-search-item-case">
+
+                          <div className="search-item-title">
+                            {result.name}
                           </div>
-                          <div className="search-item-desc">{result.description}</div>
-                        </Link>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="search-no-results">No history found for "{searchQuery}"</div>
-                  )
+
+                          <div className="upper-search-item-min-case">
+
+                            <div className="search-item-genre-category">
+                              {result.genre}
+                            </div>
+
+                            <div className="search-item-genre-category">
+                              {result.category}
+                            </div>
+
+                            <div className="search-item-genre-category">
+                              {result.year}
+                            </div>
+
+                          </div>
+                        </div>
+
+                        <div className="search-item-desc">
+                          {result.desc}
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+
                 ) : (
-                  <div className="search-placeholder-text">Type something to search the retro archive...</div>
+
+                  <div className="search-no-results">
+                    No results found for "{searchQuery}"
+                  </div>
+
                 )}
+
               </div>
             </motion.div>
           </div>

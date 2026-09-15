@@ -1,5 +1,5 @@
 import React from "react";
-const DATABASE = {
+export const DATABASE = {
     FPS: {
         "Arena Shooter": [
             {
