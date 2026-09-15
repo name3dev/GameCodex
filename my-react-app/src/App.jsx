@@ -337,22 +337,6 @@ function App() {
                 Profile
               </button>
 
-              <button className="dropdown-item">
-                Favorite Games
-              </button>
-
-              <button className="dropdown-item">
-                Achievements
-              </button>
-
-              <button className="dropdown-item">
-                Timeline
-              </button>
-
-              <button className="dropdown-item">
-                Settings
-              </button>
-
               <div className="dropdown-divider"></div>
 
               <button

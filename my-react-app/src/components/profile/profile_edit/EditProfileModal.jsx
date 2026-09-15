@@ -55,6 +55,7 @@ function EditProfileModal({ profile, setProfile, onClose }) {
                 />
 
                 <textarea
+                    className="bio-input"
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     placeholder="Bio"
@@ -62,11 +63,11 @@ function EditProfileModal({ profile, setProfile, onClose }) {
 
                 <div className="edit-buttons">
 
-                    <button onClick={handleSave}>
+                    <button className="save-button" onClick={handleSave}>
                         Save
                     </button>
 
-                    <button onClick={onClose}>
+                    <button className="cancel-button" onClick={onClose}>
                         Cancel
                     </button>
 
