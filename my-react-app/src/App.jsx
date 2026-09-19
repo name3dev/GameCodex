@@ -136,9 +136,9 @@ function App() {
     </div>;
   }
 
-  if (!user) {
-    return <Auth />;
-  }
+  // if (!user) {
+  //   return <Auth />;
+  // }
 
 
   const handleGainXp = async (amount) => {
